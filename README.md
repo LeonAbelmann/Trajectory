@@ -6,8 +6,8 @@ and Leon W. M. M. Terstappen "Optimal Halbach configuration for
 flow-through immunomagnetic CTC enrichment".
 
 <ul>
-<li>TrajectoryArray.py : Calculation of trajectories
-<li>config.py               : Calculation parameters
+<li>Trajectory.py : Calculation of trajectories
+<li>config.py     : Calculation parameters
 </ul>
  
 Field calculations are performed by integration over charges.
