@@ -27,22 +27,22 @@ mu0 = 4e-7*pi # Vacuum permeability
 tomm = 1000 # m to mm
 
 # Definition of Halbach array. See FieldHalbachArray for details.
-from FieldGenArray import B, gradB
+from FieldArray import B, gradB
 
-# N = 10 # 10 4x4 magnets 
-# a = np.zeros(N); h=np.zeros(N); m=np.zeros((N,3))
-# b    = 12e-3 # Same for all magnets
-# a[0] = 4e-3; h[0] = 4e-3; m[0] = [ 0, 0, 1]
-# a[1] = 4e-3; h[1] = 4e-3; m[1] = [-1, 0, 0]
-# a[2] = 4e-3; h[2] = 4e-3; m[2] = [ 0, 0,-1]
-# a[3] = 4e-3; h[3] = 4e-3; m[3] = [ 1, 0, 0]
-# a[4] = 4e-3; h[4] = 4e-3; m[4] = [ 0, 0, 1]
-# a[5] = 4e-3; h[5] = 4e-3; m[5] = [-1, 0, 0]
-# a[6] = 4e-3; h[6] = 4e-3; m[6] = [ 0, 0,-1]
-# a[7] = 4e-3; h[7] = 4e-3; m[7] = [ 1, 0, 0]
-# a[8] = 4e-3; h[8] = 4e-3; m[8] = [ 0, 0, 1]
-# a[9] = 4e-3; h[9] = 4e-3; m[9] = [-1, 0, 0]
-# Hal_l  = 40e-3 # mm
+N = 10 # 10 4x4 magnets 
+a = np.zeros(N); h=np.zeros(N); m=np.zeros((N,3))
+b    = 12e-3 # Same for all magnets
+a[0] = 4e-3; h[0] = 4e-3; m[0] = [ 0, 0, 1]
+a[1] = 4e-3; h[1] = 4e-3; m[1] = [-1, 0, 0]
+a[2] = 4e-3; h[2] = 4e-3; m[2] = [ 0, 0,-1]
+a[3] = 4e-3; h[3] = 4e-3; m[3] = [ 1, 0, 0]
+a[4] = 4e-3; h[4] = 4e-3; m[4] = [ 0, 0, 1]
+a[5] = 4e-3; h[5] = 4e-3; m[5] = [-1, 0, 0]
+a[6] = 4e-3; h[6] = 4e-3; m[6] = [ 0, 0,-1]
+a[7] = 4e-3; h[7] = 4e-3; m[7] = [ 1, 0, 0]
+a[8] = 4e-3; h[8] = 4e-3; m[8] = [ 0, 0, 1]
+a[9] = 4e-3; h[9] = 4e-3; m[9] = [-1, 0, 0]
+Hal_l  = 40e-3 # mm
 
 # N = 32 # 16 sets of (1x1.5)+(1.5x1) magnets 
 # a = np.zeros(N); h=np.zeros(N); m=np.zeros((N,3)) # [0..31]
@@ -54,15 +54,15 @@ from FieldGenArray import B, gradB
 #     a[3+4*i] = 1.5e-3; h[3+4*i] = 1.0e-3; m[3+4*i] = [ 1, 0, 0]
 # Hal_l  = 40e-3 # mm
 
-N = 40 # 20 sets of (1x2.75)+(1x2) magnets 
-a = np.zeros(N); h=np.zeros(N); m=np.zeros((N,3)) # [0..39]
-b    = 12e-3 # Same for all magnets
-for i in range (10): # [0...9]
-    a[0+4*i] = 1.0e-3; h[0+4*i] = 2.75e-3; m[0+4*i] = [ 0, 0, 1]
-    a[1+4*i] = 1.0e-3; h[1+4*i] = 2.00e-3; m[1+4*i] = [-1, 0, 0]
-    a[2+4*i] = 1.0e-3; h[2+4*i] = 2.75e-3; m[2+4*i] = [ 0, 0,-1]
-    a[3+4*i] = 1.0e-3; h[3+4*i] = 2.00e-3; m[3+4*i] = [ 1, 0, 0]
-Hal_l  = 40e-3 # mm
+# N = 40 # 20 sets of (1x2.75)+(1x2) magnets 
+# a = np.zeros(N); h=np.zeros(N); m=np.zeros((N,3)) # [0..39]
+# b    = 12e-3 # Same for all magnets
+# for i in range (10): # [0...9]
+#     a[0+4*i] = 1.0e-3; h[0+4*i] = 2.75e-3; m[0+4*i] = [ 0, 0, 1]
+#     a[1+4*i] = 1.0e-3; h[1+4*i] = 2.00e-3; m[1+4*i] = [-1, 0, 0]
+#     a[2+4*i] = 1.0e-3; h[2+4*i] = 2.75e-3; m[2+4*i] = [ 0, 0,-1]
+#     a[3+4*i] = 1.0e-3; h[3+4*i] = 2.00e-3; m[3+4*i] = [ 1, 0, 0]
+# Hal_l  = 40e-3 # mm
 
 Br     = 1.35  # Remanent magnetisation magnet in Tesla
 
@@ -89,7 +89,7 @@ rc    = 5e-6 # Cell radius (m)
 rho   = 0 # Density difference with water kg/m3
 nump  = 10     # number of magnetic particles on cell
 mp    = (Bp/mu0)*Vp*nump # Magnetic moment of cell
-mp    = 4e-15 # Override LEON
+# mp    = 4e-15 # Override 
 Vc    = (4/3)*pi*(rc)**3 # volume of cell [m3]
 f     = 6*pi*rc*eta # friction coefficient (F/v)
 vterm = rho*Vc*9.8/f # sinking velocity of cell
@@ -104,20 +104,18 @@ print("Cell friction coefficient (f) : %g Ns/m" % (f))
 print("Cell drop velocity (vterm)    : %g m/s"  % (vterm))
 print("Average flow velocity (vflow) : %g m/s"  % (vflow))
 
-
 # Velocity field, defined in plane perpendicular to array (xz plane).
 def velocity_field(t, xz):
     x, z = xz
     
     # Permanent dipole model F=m2*grad(B), 
-    (gradx,grady,gradz)=gradB(x,ypos,z,
-                                  a=a, b=b, h=h, m=m)
+    (gradx,grady,gradz)=gradB(x,ypos,z,a=a, b=b, h=h, m=m)
     # Force = mp*grad(B). velocity = F/f.
     # note that B is scaled for Br=1T, so multiply by Br
     prefactor = mp*Br/f
     # vflow is average flow, assume parabolic flow profile
-    # Note that channel runs from channel_d to channel_d+channel_h, so center is
-    # channel_d + channel_h/2
+    # Note that channel runs from channel_d to channel_d+channel_h,
+    # so center is channel_d + channel_h/2
     # print("vflow : ", vflow)
     v_parabolic = 1.5*vflow*(1-((2*(z-channel_d)/channel_h)-1)**2)
     # print("flow at z = %g : %g" % (z,v_parabolic))
@@ -154,7 +152,8 @@ def exit(t,xz):
 exit.terminal = True
 exit.direction = 1
 
-# Exit: If the particles reach entry of the array. For reverse trajectories
+# Exit: If the particles reach entry of the array.
+# For reverse trajectories
 def entry(t,xz):
     x,z = xz
     x0 = xstart # Entry of channel, these particles are captured
@@ -164,10 +163,12 @@ def entry(t,xz):
 entry.terminal = True
 entry.direction = -1
 
-# Top: If the particles get hit the top. For reverse trajectories
+# Top: If the particles get hit the top.
+# For reverse trajectories
 def top(t,xz):
     x,z = xz
-    z0 = channel_d + channel_h # highest value of z above which we stop simulating
+    # highest value of z above which we stop simulating:
+    z0 = channel_d + channel_h 
     if ((z>z0)):
         print("top: x: %g, z: %g" % (x,z))
     return (z-z0)
@@ -176,7 +177,8 @@ top.direction = 1
 
 
 
-# calcTrajectory: Simulate trajectory starting at 0,zstart. Write result to file
+# calcTrajectory: Simulate trajectory starting at 0,zstart.
+# Write result to file
 def calcTrajectory(zstart):
     xz0 = (xstart, zstart)
     csv_filename="T_{0:g}_{1:g}.csv".format(zstart*1000,fvol)
@@ -193,8 +195,8 @@ def calcTrajectory(zstart):
     print("zstart: %g, Execution time: % g" %
           (zstart, time.time()-start))
 
-# calcTrajectoryInv: Simulate time inverter trajectory starting at Hal_l,zstart.
-# Write result to file
+# calcTrajectoryInv: Simulate time inverted trajectory starting
+# at Hal_l,zstart. Write result to file
 def calcTrajectoryInv(zstart):
     xz0 = (Hal_l, zstart)
     csv_filename="Tinv_{0:g}_{1:g}.csv".format(zstart*1000,fvol)
@@ -227,14 +229,13 @@ def calc_capture(zmax):
 ########################################################################
 
 # Test velocityfield
-if 0:
+if 1:
     x = 40e-3
     z = 0.6e-3
-    vflow = 0
-    print(velocity_field(0,[x,z]))
+    # vflow = 0 # Switch off flow
     vx, vz = velocity_field(0,[x,z])
     vy = 0
-    print("v = (% .5e, % .5e, % .5e)" % (vx,vy,vz))
+    print("v = (% .2g, % .2g, % .2g) mm/s" % (vx*tomm,vy*tomm,vz*tomm))
 
 # Vectorplot of velocityfield in xz plane
 if 0:
@@ -257,8 +258,8 @@ if 0:
         V=U.copy()
         W=U.copy()
         
-        # Define wrapper function for easy switch between parallel/intepreter
-        # operation
+        # Define wrapper function for easy switch
+        # between parallel/intepreter operation
         def fun(x, z):
             xz = x, z
             vx, vz = velocity_field(0, xz)
@@ -270,7 +271,8 @@ if 0:
             for i in range(gridz):
                 for j in range(gridx):
                     U[i,j], V[i,j], W[i,j] = fun(X[i,j],Z[i,j])
-                    print("(i,j)=(%.3d,%.3d) (% .5f, % .5f) (% .5e, % .5e, % .5e)"
+                    print("(i,j)=(%.3d,%.3d) (% .5f, % .5f)"
+                          " (% .5e, % .5e, % .5e)"
                         % (i,j,X[i,j],Z[i,j], U[i,j],V[i,j],W[i,j]))
         else:
             # Create jobs, one per set of (i,j)
@@ -296,7 +298,8 @@ if 0:
                 for k,v in results:
                     U[k], V[k], W[k] = v[1]
                     i, j = k
-                    print("(i,j)=(%3d,%3d) (% .5f, % .5f) (% .5f, % .5f, % .5f)"
+                    print("(i,j)=(%3d,%3d) (% .5f, % .5f)"
+                          " (% .5f, % .5f, % .5f)"
                         % (i,j,X[i,j],Z[i,j], U[i,j],V[i,j],W[i,j]))
             
                 pool.close()
@@ -331,9 +334,10 @@ if 0:
                 Ur[i,j]    = Ur[i,j] / norm[i,j]
                 Vr[i,j]    = Vr[i,j] / norm[i,j]
                 Wr[i,j]    = Wr[i,j] / norm[i,j]
+        fig, ax = plt.subplots(figsize=(6,4))
+        # In case you want correct aspect ratio:
         #ratio = (zmax-zmin)/(xmax-xmin)
         #fig, ax = plt.subplots(figsize=(7, 7*ratio))
-        fig, ax = plt.subplots(figsize=(6,4))
         c = ax.pcolormesh(Xr*tomm, Zr*tomm, norm*1e6, cmap='gray',
                         #vmin=0,
                         shading='gouraud')
@@ -367,6 +371,7 @@ if 0:
 
     # Starting point of trajectory
     startpoints = [0.82e-3]
+    # Other examples:
     #startpoints =  np.arange(0.3e-3,1.1e-3,0.1e-3)
     #startpoints = [0.72e-3,0.74e-3,0.76e-3,0.78e-6]
     
@@ -413,16 +418,17 @@ if 0:
         plt.show();    
 
 # Calculate maximum zstart which stil is captured
-if 1:
-    simulationtime=(Hal_l-xstart)/vflow # Average time for particle to pass array
+if 0:
+    # Average time for particle to pass array:
+    simulationtime=(Hal_l-xstart)/vflow 
 
-    calculate = 0
+    calculate = 1
     plot = not calculate # First calculate, than plot from csv file
 
     if calculate:
         start = time.time()
-        # Start calculateing backwards from capture point
-        # Parallel does not make sens, only one trajectory
+        # Start calculating backwards from capture point
+        # (Parallel does not make sense, there is only one trajectory)
         calcTrajectoryInv(channel_d)
     # Load and plot csv file
     if plot :

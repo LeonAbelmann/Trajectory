@@ -63,16 +63,17 @@ def B(x,y,z, a = [1],b = 1,h = [1],m = [1,0,0]):
     Bz = 0;
     shiftx = 0;
     for i in range(a.size):
-        print("i: %d, a=%g, b=%g, h=%g, m=(%g,%g,%g)" %
-                  (i,a[i],b,h[i],m[i,0],m[i,1],m[i,2]))
+        #print("i: %d, a=%g, b=%g, h=%g, m=(%g,%g,%g)" %
+        #          (i,a[i],b,h[i],m[i,0],m[i,1],m[i,2]))
+
         # FieldBlock.B(x,y,z,a,b,h,m)
         # Field of block with dimensions a x b x h, centered
         # at (0,0,0), with magnetisation components mb=(mx, my, mz)
         # so you need to shift x a[i]/2 to the right, z h[i] down
         Bval = FieldBlock.B(x-(a[i]/2)-shiftx, y-b/2, z+(h[i]/2),
                                 a[i], b, h[i], m[i])
-        print("B(%g, %g, %g)=(%g, %g, %g) " %
-               (x-a[i]/2-shiftx,y-b/2,z+h[i]/2,Bval[0],Bval[1],Bval[2]))
+        #print("B(%g, %g, %g)=(%g, %g, %g) " %
+        #       (x-a[i]/2-shiftx,y-b/2,z+h[i]/2,Bval[0],Bval[1],Bval[2]))
 
         # every next magnet has to be placed to the right of all former
         # ones (shiftx)
@@ -100,7 +101,7 @@ starttime = time.time()
 config.NDip = 0
 
 # Test single point
-if 1:
+if 0:
     # Location
     xpos = 4e-3
     ypos = b/2
@@ -111,7 +112,7 @@ if 1:
     gBx,gBy,gBz = gradB(xpos,ypos,zpos,
                 a=a, b=b, h=h, m=m)
     print("Number of dipole approximations: %d" % config.NDip) 
-    print("Total calculation time... : %g" % (time.time()-starttime))
+    print("Total calculation time... : %g s" % (time.time()-starttime))
     print("At point %3.0g,%3.0g,%3.0g) :" % (xpos,ypos,zpos))
     print("B     : (%3.3g,%3.3g,%3.3g)" % (Bx,By,Bz))
     print("gradB : (%3.3g,%3.3g,%3.3g)" % (gBx,gBy,gBz))
