@@ -5,6 +5,11 @@ Michiel Stevens, Peng Liu, Tom Niessink, Anouk Mentink, Leon Abelmann
 and Leon W. M. M. Terstappen "Optimal Halbach configuration for
 flow-through immunomagnetic CTC enrichment".
 
+and
+
+Leon Abelmann, Eunheui Gwag, Baeckkyoung Sung "Magnetic forces increase the mortality of liver cells in the presence of iron-oxide nanoparticles."
+
+
 <ul>
 <li>Trajectory.py : Calculation of trajectories
 <li>config.py     : Calculation parameters
