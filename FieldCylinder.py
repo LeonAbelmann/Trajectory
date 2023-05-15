@@ -1,6 +1,6 @@
 #*************************************************************************
-# FieldBlock
-# Calculate field components and gradient of field of magnetised block
+# FieldCylinder
+# Calculate field components and gradient of field of magnetised cylinder
 # Parameters for numerical approximation are listed in config.py
 # Leon Abelmann, May 2021
 #**************************************************************************
@@ -8,7 +8,7 @@ import numpy as np
 from numpy import pi, cos, sin, sqrt
 
 import config
-import FieldSquare
+import FieldDisc
 from FieldDipole import Bdip, gradBdip
 
 #for derivative
@@ -25,13 +25,13 @@ def norm2(vx,vy,vz):
 # gradB(x,y,z)
 # Returns gradient of B 
 #*************************************************************************
-def gradB(x0,y0,z0,a,b,h,m):
+def gradB(x0,y0,z0,r,h):
     def fx(x):
-        return norm(B(x,y0,z0,a,b,h,m))
+        return norm(B(x,y0,z0,r,h))
     def fy(y):
-        return norm(B(x0,y,z0,a,b,h,m))
+        return norm(B(x0,y,z0,r,h))
     def fz(z):
-        return norm(B(x0,y0,z,a,b,h,m))
+        return norm(B(x0,y0,z,r,h))
     dBdx = derivative(fx, x0, dx=config.DerP)
     if config.threed:
         dBdy = derivative(fy, y0, dx=config.DerP)
@@ -63,76 +63,57 @@ def gradB2(x0,y0,z0,a,b,h):
 
 
 #*************************************************************************
-# B(x,y,z,a,b,h,m)
-# Field of block, magnetised along z, with dimensions a x b x h, centered
-# at (0,0,0), with magnetisation components m=(mx, my, mz) (|m| = 1)
+# B(x,y,z,r,h)
+# Field of cylinder, magnetised along z, with radius r and height h, centered
+# at (0,0,0)
 # Returns Bx, By, Bz
 # Charge density is 1, so multiply with magnetisation to get the
 # actual magnetic field.
 #*************************************************************************
-def B(x,y,z,a,b,h,m):
-    mx, my, mz = m
+def B(x,y,z,r,h):
     # Approximate with dipole in far field
     # DAppr : how far away
     DAppr = config.DAppr
-    r=x**2+y**2+z**2
-    if ((r > (DAppr*a)**2) and (r > (DAppr*b)**2) and (r > (DAppr*h)**2)):
+    r2=x**2+y**2+z**2
+    if ((r2 > (DAppr*r)**2) and (r2 > (DAppr*h)**2)):
         config.NDip = config.NDip + 1 # NDip is global, see config.py
         #print("Dipole approximation, Ndip= %g" % config.NDip)
-        return Bdip([x,y,z],a*b*h,m)
-    if mx !=0: # Rotate block around y +90 deg (x->-z, z->x)
-        Bf =  FieldSquare.Bsquare(-z,y,x-a/2,h,b)
-        Bb =  FieldSquare.Bsquare(-z,y,x+a/2,h,b)
-        # Rotate fields back around y (-90) (x->z, z->-x)
-        Bx =  mx*( Bf[2] - Bb[2])
-        By =  mx*( Bf[1] - Bb[1])
-        Bz =  mx*(-Bf[0] + Bb[0])
-    if my !=0: # Rotate block around x +90 deg (y->-z, z->y)
-        Bf =  FieldSquare.Bsquare(x,-z,y-b/2,a,h) 
-        Bb =  FieldSquare.Bsquare(x,-z,y+b/2,a,h)
-        # Rotate fields back around x (-90) (y->z, z->-y)
-        Bx =  my*( Bf[0] - Bb[0])
-        By =  my*( Bf[2] - Bb[2])
-        Bz =  my*(-Bf[1] + Bb[1])
-    if mz != 0:
-        Bf =  FieldSquare.Bsquare(x,y,z-h/2,a,b)
-        Bb =  FieldSquare.Bsquare(x,y,z+h/2,a,b)
-        Bx =  mz*( Bf[0] - Bb[0])
-        By =  mz*( Bf[1] - Bb[1])
-        Bz =  mz*( Bf[2] - Bb[2])
+        return Bdip([x,y,z],pi*r**2*h,[0,0,1])
+    Bf =  FieldDisc.Bdisc(x,y,z-h/2,r)
+    Bb =  FieldDisc.Bdisc(x,y,z+h/2,r)
+    Bx =  Bf[0] - Bb[0]
+    By =  Bf[1] - Bb[1]
+    Bz =  Bf[2] - Bb[2]
     return [Bx,By,Bz]
 
 # Test
 if __name__ == "__main__":
    # stuff only to run when not called via 'import' here
     # Magnet dimensions
-    a=1
-    b=2
-    h=3
-    # Magnetisation direction (|m|=1 )
-    m = [1,0,0]
+    r=22.5
+    h=30
     # Position
-    x1 = 9
-    y1 = 10
-    z1 = 11
+    x1 = 0
+    y1 = 0
+    z1 = 250
     # Do not approximate with dipole by setting cut-off distance big
     config.DAppr = 1e9
     # Reset number of dipole approximations made (to check)
     config.NDip = 0
-    print("Magnet (a,b,h)   : (%.3g, %.3g, %.3g)" % (a,b,h))
+    print("Magnet (r,h)     : (%.3g, %.3g)" % (r,h))
     print("Position (x,y,z) : (%.3g, %.3g, %.3g)" % (x1,y1,z1))
     # Calculate field
-    Bx,By,Bz = B(x1,y1,z1,a,b,h,m)
+    Bx,By,Bz = B(x1,y1,z1,r,h)
     print("B                : (%.3g,%.3g,%.3g)"     % (Bx,By,Bz)) 
 
     # Calculate field of dipole for comparison (should match at r->inf)
-    Bdipx,Bdipy,Bdipz = Bdip([x1,y1,z1],a*b*h,m)
+    Bdipx,Bdipy,Bdipz = Bdip([x1,y1,z1],pi*r**2*h,[0,0,1])
     print("B dipole         : (%.3g,%.3g,%.3g)" % (Bdipx,Bdipy,Bdipz)) 
 
     # Same for gradients:
-    gBx,gBy,gBz       = gradB(x1,y1,z1,a,b,h,m)
+    gBx,gBy,gBz       = gradB(x1,y1,z1,r,h)
     print("gradB            : (%.3g,%.3g,%.3g)"% (gBx,gBy,gBz)) 
-    gBdipx,gBdipy,gBdipz = gradBdip([x1,y1,z1],a*b*h,m)
+    gBdipx,gBdipy,gBdipz = gradBdip([x1,y1,z1],pi*r**2*h,[0,0,1])
     print("gradB dipole     : (%.3g,%.3g,%.3g)"% (gBdipx,gBdipy,gBdipz)) 
 
     print("Number of dipole approximations = %g" % config.NDip)

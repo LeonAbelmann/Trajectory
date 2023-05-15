@@ -88,10 +88,11 @@ def Bdip(vec,moment,m):
     return [Bx,By,Bz]
 
 # Test
-if 0:
+if __name__ == "__main__":
+   # stuff only to run when not called via 'import' here
     pos    = [0,0,1]
     m      = [0,0,1]
     moment = 1
-    print("Bdip    : ", Bdip(pos,moment,m))
-    print("gradBdip: ", gradBdip(pos,moment,m))
+    print("Bdip    :  ", Bdip(pos,moment,m))
+    print("gradBdip:  ", gradBdip(pos,moment,m))
 
