@@ -24,3 +24,5 @@ opposite sign)
 at large distance
 <li>FieldArray.py        : Field of array of bar magnets (FieldBlocks)
 </ul>
+
+This project is licensed under the terms of the MIT license
